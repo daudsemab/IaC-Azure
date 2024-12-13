@@ -1,13 +1,14 @@
 name: Provision Infrastructure on Azure
 
-on: Push
+on: 
+  push:
 
-Jobes:
-    Welcome Repository:
-        runs_on: ubuntu-latest
-        steps:
-        - name: Checkout Repo
-          uses: actions/checkout@v4
-        
-        - name: Greetings
-          run: echo "Welcome to the machine."
+jobs:
+  welcome_repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Greetings
+        run: echo "Welcome to the machine."
