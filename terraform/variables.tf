@@ -1,12 +1,12 @@
 variable resource_group_name {
   type        = string
-  default     = "1-9ae007f3-playground-sandbox"
+  default     = "1-811d974d-playground-sandbox"
   description = "Resource Group"
 }
 
 variable resource_group_location {
   type        = string
-  default     = "South Central US"
+  default     = "West US"
   description = "Resource Group Location"
 }
 
