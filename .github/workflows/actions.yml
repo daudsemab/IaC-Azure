@@ -26,8 +26,5 @@ jobs:
 
       - name: Terraform Apply 
         run: |
-          echo $TF_VAR_CLIENT_ACCESS
-          terraform init
-          terraform validate 
-          terraform apply -auto-approve
+          echo ${{ secrets.TF_VAR_CLIENT_ACCESS }}
         working-directory: ./terraform
