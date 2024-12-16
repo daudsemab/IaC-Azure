@@ -34,5 +34,5 @@ variable subnet_address_prefixes {
   description = "Subnet Address Prefixes"
 }
 
-variable client_access {
+variable CLIENT_ACCESS {
 }
