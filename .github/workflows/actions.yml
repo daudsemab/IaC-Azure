@@ -26,5 +26,7 @@ jobs:
 
       - name: Terraform Apply 
         run: |
-          echo ${{ secrets.TF_VAR_CLIENT_ACCESS }}
+          terraform init
+          terraform validate 
+          terraform apply -var="TF_VAR_CLIENT_ACCESS=${{ secrets.TF_VAR_CLIENT_ACCESS }}"
         working-directory: ./terraform
