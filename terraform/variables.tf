@@ -10,7 +10,6 @@ variable resource_group_location {
   description = "Resource Group Location"
 }
 
-
 variable storage_account_name {
   type        = string
   default     = "tfstatebackendstorage"
@@ -33,4 +32,7 @@ variable subnet_address_prefixes {
   type        = list
   default     = ["10.0.2.0/24"]
   description = "Subnet Address Prefixes"
+}
+
+variable client_access {
 }
