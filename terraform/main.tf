@@ -1,9 +1,3 @@
-locals {
-    resource_group_name = "1-811d974d-playground-sandbox"
-    storage_account_name = "tfstatebackendstorage11"
-    storage_container_name = "tfstate-container"
-}
-
 terraform {
   required_providers {
     azurerm = {
@@ -13,9 +7,9 @@ terraform {
   }
 
   backend "azurerm" { # Step-2 to setup remote state.
-    resource_group_name  = local.resource_group_name
-    storage_account_name = local.storage_account_name
-    container_name       = local.storage_container_name
+    resource_group_name  = "1-811d974d-playground-sandbox"
+    storage_account_name = "tfstatebackendstorage11"
+    container_name       = "tfstate-container"
     key                  = "terraform.tfstate"
   }
 }
