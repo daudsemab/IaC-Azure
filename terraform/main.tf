@@ -6,7 +6,7 @@ terraform {
     }
   }
 
-  # backend "azurerm" { # Step-2 to setup remote state.
+  # backend "azurerm" { # Step-3 to setup remote state.
   #   resource_group_name  = "1-811d974d-playground-sandbox"
   #   storage_account_name = "tfstatebackendstorage11"
   #   container_name       = "tfstate-container"
@@ -38,10 +38,14 @@ resource "azurerm_storage_account" "tfstate" { # Step-1 to setup remote state.
   }
 }
 
-resource "azurerm_storage_container" "tfstate" { # Step-1 to setup remote state.
+resource "azurerm_storage_container" "tfstate" { # Step-2 to setup remote state.
   name                  = var.storage_container_name
   storage_account_name  = var.storage_account_name
   container_access_type = "private"
+
+  depends_on = [
+    azurerm_storage_account.tfstate
+  ]
 }
 
 
