@@ -1,3 +1,7 @@
+provider "azurerm" {
+  features {}
+}
+
 resource "azurerm_storage_account" "tfstate" { # Step-1 to setup remote state.
   name                            = var.storage_account_name
   resource_group_name             = var.resource_group_name
