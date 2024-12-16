@@ -23,10 +23,13 @@ jobs:
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+      
 
       - name: Terraform Apply 
+        env:
+          TF_VAR_CLIENT_ACCESS: ${{ secrets.TF_VAR_CLIENT_ACCESS }}
         run: |
           terraform init
           terraform validate 
-          TF_VAR_CLIENT_ACCESS=${{ secrets.TF_VAR_CLIENT_ACCESS }}" terraform apply
+          terraform apply --auto-approve
         working-directory: ./terraform
