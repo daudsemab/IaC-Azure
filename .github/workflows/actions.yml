@@ -28,5 +28,5 @@ jobs:
         run: |
           terraform init
           terraform validate 
-          terraform apply -var="TF_VAR_CLIENT_ACCESS=${{ secrets.TF_VAR_CLIENT_ACCESS }}"
+          TF_VAR_CLIENT_ACCESS=${{ secrets.TF_VAR_CLIENT_ACCESS }}" terraform apply
         working-directory: ./terraform
