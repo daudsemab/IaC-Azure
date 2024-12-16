@@ -13,9 +13,9 @@ terraform {
   }
 
   backend "azurerm" { # Step-2 to setup remote state.
-    resource_group_name  = locals.resource_group_name
-    storage_account_name = locals.storage_account_name
-    container_name       = locals.storage_container_name
+    resource_group_name  = local.resource_group_name
+    storage_account_name = local.storage_account_name
+    container_name       = local.storage_container_name
     key                  = "terraform.tfstate"
   }
 }
