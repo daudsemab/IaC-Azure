@@ -1,18 +1,18 @@
 variable resource_group_name {
   type        = string
-  default     = "1-4280e488-playground-sandbox"
+  default     = "1-96ecf2f8-playground-sandbox"
   description = "Resource Group"
 }
 
 variable resource_group_location {
   type        = string
-  default     = "West US"
+  default     = "South Central US"
   description = "Resource Group Location"
 }
 
 variable storage_account_name {
   type        = string
-  default     = "tfstatebackendstorage24"
+  default     = "tfstatebackendstorage25"
   description = "Backend Storage Account"
 }
 
@@ -39,6 +39,13 @@ variable vm_admin_username {
   default     = "daudadmin"
   description = "VM Admin Username"
 }
+
+variable vm_admin_pass {
+  type        = string
+  default     = "admindaud"
+  description = "Code"
+}
+
 
 variable CLIENT_ACCESS {
 }

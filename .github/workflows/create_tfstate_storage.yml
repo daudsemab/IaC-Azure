@@ -1,0 +1,24 @@
+name: Github Action Workflow-3
+run-name: Storage Account Creation
+
+on: workflow_dispatch
+
+permissions:
+  id-token: write
+
+jobs:
+  CreateStorage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Run the following commands
+        run: |
+          chmod +x ./scripts/create_storage_container.bashrc
+          ./scripts/create_storage_container.bashrc
