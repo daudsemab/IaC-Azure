@@ -52,25 +52,6 @@ resource "azurerm_public_ip" "vm1_public_ip" {
   allocation_method   = "Static"
 }
 
-# NETWORK SECURITY GROUP
-resource "azurerm_network_security_group" "devops-nsg" {
-    name                = "nsg1"
-    location            = var.resource_group_location
-    resource_group_name = var.resource_group_name
-
-    security_rule {
-        name                       = "SSH"
-        priority                   = 1001
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "Tcp"
-        source_port_range          = "*"
-        destination_port_range     = "22"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-    }
-}
-
 # NETWORK INTERFACE CARD
 resource "azurerm_network_interface" "devops-nic" {
   name                = "dev-nic"
@@ -83,12 +64,6 @@ resource "azurerm_network_interface" "devops-nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.vm1_public_ip.id
   }
-}
-
-# NIC AND NSG CONNECTION
-resource "azurerm_network_interface_security_group_association" "network-connection" {
-    network_interface_id      = azurerm_network_interface.devops-nic.id
-    network_security_group_id = azurerm_network_security_group.devops-nsg.id
 }
 
 # TLS KEY
