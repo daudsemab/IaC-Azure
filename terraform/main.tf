@@ -100,13 +100,4 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-
-  connection {
-      host = self.public_ip_address
-      user = var.vm_admin_username
-      type = "ssh"
-      private_key = tls_private_key.devops_ssh.private_key_pem
-      timeout = "4m"
-      agent = false
-  }
 }
