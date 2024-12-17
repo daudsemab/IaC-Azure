@@ -150,11 +150,12 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt update -y",
-      "sudo apt install -y software-properties-common",
+      "sudo apt install -y software-properties-common python3-pip python3-dev python3-setuptools python3-venv python3-jinja2 python3-yaml python3-httplib2 sshpass python3-cryptography",
       "sudo add-apt-repository --yes --update ppa:ansible/ansible",
       "sudo apt install -y ansible"
     ]
   }
+
 
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${path.module}/id_rsa_key ./../ansible/playbook.yml"
