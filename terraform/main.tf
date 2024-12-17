@@ -100,6 +100,6 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${var.vm1_public_ip}, -u ${var.vm_admin_username} --private-key ${tls_private_key.devops_ssh.private_key_pem} ./../ansible/playbook.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${tls_private_key.devops_ssh.private_key_pem} ./../ansible/playbook.yml"
   }
 }
