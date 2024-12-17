@@ -1,7 +1,7 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME=1-9ddb1d1d-playground-sandbox
-STORAGE_ACCOUNT_NAME=tfstatebackendstorage23
+RESOURCE_GROUP_NAME=1-4280e488-playground-sandbox
+STORAGE_ACCOUNT_NAME=tfstatebackendstorage24
 CONTAINER_NAME=tfstate-container
 
 # Create storage account

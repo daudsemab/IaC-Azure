@@ -10,8 +10,8 @@ terraform {
 
   # BACKEND STORAGE FOR TERRAFORM STATE
   backend "azurerm" {
-    resource_group_name  = "1-9ddb1d1d-playground-sandbox"
-    storage_account_name = "tfstatebackendstorage23"
+    resource_group_name  = "1-4280e488-playground-sandbox"
+    storage_account_name = "tfstatebackendstorage24"
     container_name       = "tfstate-container"
     key                  = "terraform.tfstate"
   }
@@ -21,10 +21,10 @@ provider "azurerm" {
   features {}
 
   # AZURE ACCESS INFO
-  client_id       = "28fcb13b-3953-41d6-82bd-056537140b90"
+  client_id       = "a1ffea1c-8f45-44db-b6fe-81b07063da71"
   client_secret   = var.CLIENT_ACCESS
   tenant_id       = "84f1e4ea-8554-43e1-8709-f0b8589ea118"
-  subscription_id = "80ea84e8-afce-4851-928a-9e2219724c69"
+  subscription_id = "9734ed68-621d-47ed-babd-269110dbacb1"
   resource_provider_registrations = "none"
 }
 
@@ -44,6 +44,14 @@ resource "azurerm_subnet" "devops-subnet" {
   address_prefixes     = var.subnet_address_prefixes
 }
 
+# PUBLIC IP ADDRESS
+resource "azurerm_public_ip" "vm1_public_ip" {
+  name                = "vm1PublicIp"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Dynamic"
+}
+
 # NETWORK INTERFACE CARD
 resource "azurerm_network_interface" "devops-nic" {
   name                = "dev-nic"
@@ -54,6 +62,7 @@ resource "azurerm_network_interface" "devops-nic" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.devops-subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.vm1_public_ip.id
   }
 }
 
