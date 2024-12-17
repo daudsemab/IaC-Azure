@@ -111,6 +111,21 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
     version   = "latest"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update -y",
+      "sudo apt install -y software-properties-common",
+      "sudo add-apt-repository --yes --update ppa:ansible/ansible",
+      "sudo apt install -y ansible"
+    ]
+    connection {
+      host        = azurerm_linux_virtual_machine.devops-vm.public_ip_address
+      type        = "ssh"
+      user        = var.vm_admin_username
+      private_key = file("${path.module}/id_rsa_key")
+    }
+  }
+
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${path.module}/id_rsa_key ./../ansible/playbook.yml"
   }
