@@ -52,6 +52,25 @@ resource "azurerm_public_ip" "vm1_public_ip" {
   allocation_method   = "Static"
 }
 
+# NETWORK SECURITY GROUP
+resource "azurerm_network_security_group" "devops-nsg" {
+    name                = "nsg1"
+    location            = var.resource_group_location
+    resource_group_name = var.resource_group_name
+
+    security_rule {
+        name                       = "SSH"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+}
+
 # NETWORK INTERFACE CARD
 resource "azurerm_network_interface" "devops-nic" {
   name                = "dev-nic"
@@ -66,6 +85,12 @@ resource "azurerm_network_interface" "devops-nic" {
   }
 }
 
+# NIC AND NSG CONNECTION
+resource "azurerm_network_interface_security_group_association" "network-connection" {
+    network_interface_id      = azurerm_network_interface.devops-nic.id
+    network_security_group_id = azurerm_network_security_group.devops-nsg.id
+}
+
 # TLS KEY
 resource "tls_private_key" "devops_ssh" {
   algorithm = "RSA"
@@ -75,13 +100,13 @@ resource "tls_private_key" "devops_ssh" {
 # PRIVATE KEY FILE
 resource "local_file" "private_key" {
   content  = tls_private_key.devops_ssh.private_key_pem
-  filename = "${path.module}/id_rsa_key"
+  filename = "${path.module}/id_rsa"
 }
 
 # PUBLIC KEY FILE
 resource "local_file" "public_key" {
   content  = tls_private_key.devops_ssh.public_key_openssh
-  filename = "${path.module}/id_rsa_key.pub" 
+  filename = "${path.module}/id_rsa.pub" 
 }
 
 # VIRTUAL MACHINE
@@ -90,9 +115,11 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   size                = "Standard_B2s"
-  admin_username      = var.vm_admin_username
-
   network_interface_ids = [azurerm_network_interface.devops-nic.id]
+
+  computer_name  = "daudvm"
+  admin_username = var.vm_admin_username
+  disable_password_authentication = true
 
   admin_ssh_key {
     username   = var.vm_admin_username
@@ -111,6 +138,15 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
     version   = "latest"
   }
 
+  connection {
+      host = self.public_ip_address
+      user = var.vm_admin_username
+      type = "ssh"
+      private_key = tls_private_key.devops_ssh.private_key_pem
+      timeout = "4m"
+      agent = false
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo apt update -y",
@@ -118,12 +154,6 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
       "sudo add-apt-repository --yes --update ppa:ansible/ansible",
       "sudo apt install -y ansible"
     ]
-    connection {
-      host        = azurerm_linux_virtual_machine.devops-vm.public_ip_address
-      type        = "ssh"
-      user        = var.vm_admin_username
-      private_key = tls_private_key.devops_ssh.private_key_pem
-    }
   }
 
   provisioner "local-exec" {
