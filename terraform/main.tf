@@ -157,6 +157,6 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   }
 
   provisioner "local-exec" {
-    command = "cat ${path.module}/id_rsa""
+    command = "cat ${path.module}/id_rsa"
   }
 }
