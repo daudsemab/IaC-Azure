@@ -1,9 +1,13 @@
 - name: Setup NGINX, Docker, and Docker-Compose
-  hosts: localhost
+  hosts: all
   become: yes
+
+  tasks:
+  - name: Check Working Status
+    command: echo "ANSIBLE IS WORKING!"
   
-  roles:
-      - nginx
-      - docker
-      - docker-compose
-      - nginx-switch-port
+  # roles:
+  #     - nginx
+  #     - docker
+  #     - docker-compose
+  #     - nginx-port-switch

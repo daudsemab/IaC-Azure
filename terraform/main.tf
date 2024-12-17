@@ -70,15 +70,13 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   location            = var.resource_group_location
   size                = "Standard_B2s"
   admin_username      = var.vm_admin_username
-  network_interface_ids = [
-    azurerm_network_interface.devops-nic.id,
-  ]
+
+  network_interface_ids = [azurerm_network_interface.devops-nic.id]
 
   admin_ssh_key {
     username   = var.vm_admin_username
     public_key = tls_private_key.devops_ssh.public_key_openssh
   }
-
 
   os_disk {
     caching              = "ReadWrite"
@@ -90,5 +88,9 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
     offer     = "UbuntuServer"
     sku       = "16.04-LTS"
     version   = "latest"
+  }
+
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${tls_private_key.devops_ssh.private_key_pem} ./../ansible/playbook.yml"
   }
 }
