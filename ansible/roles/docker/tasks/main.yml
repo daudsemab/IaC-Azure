@@ -1,44 +1,44 @@
 ---
 # tasks file for docker
-  tasks:
-    - name: APT Update
-      apt:
-        update_cache: yes
+tasks:
+  - name: APT Update
+    apt:
+      update_cache: yes
 
-    - name: Install Docker Dependencies
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-        state: present
+  - name: Install Docker Dependencies
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+      state: present
 
-    - name: Add Docker's official GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+  - name: Add Docker's official GPG key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
 
-    - name: Add Docker Repository
-      apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-        state: present
+  - name: Add Docker Repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      state: present
 
-    - name: Install Docker & Docker Compose
-      apt:
-        name:
-          - docker-ce
-        state: present
+  - name: Install Docker & Docker Compose
+    apt:
+      name:
+        - docker-ce
+      state: present
 
-    - name: Start Docker service
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
+  - name: Start Docker service
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
 
-    - name: Verify Docker installation
-      command: docker --version
-      register: docker_version
+  - name: Verify Docker installation
+    command: docker --version
+    register: docker_version
 
-    - debug:
-        msg: 'Docker version: {{ docker_version.stdout }}'
+  - debug:
+      msg: 'Docker version: {{ docker_version.stdout }}'
