@@ -11,7 +11,7 @@ terraform {
   # BACKEND STORAGE FOR TERRAFORM STATE
   backend "azurerm" {
     resource_group_name  = "1-9ddb1d1d-playground-sandbox"
-    storage_account_name = "tfstatebackendstorage22"
+    storage_account_name = "tfstatebackendstorage23"
     container_name       = "tfstate-container"
     key                  = "terraform.tfstate"
   }
