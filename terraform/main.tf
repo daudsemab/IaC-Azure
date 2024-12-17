@@ -72,6 +72,18 @@ resource "tls_private_key" "devops_ssh" {
   rsa_bits  = 4096
 }
 
+# PRIVATE KEY FILE
+resource "local_file" "private_key" {
+  content  = tls_private_key.devops_ssh.private_key_pem
+  filename = "${path.module}/id_rsa_key"
+}
+
+# PUBLIC KEY FILE
+resource "local_file" "public_key" {
+  content  = tls_private_key.devops_ssh.public_key_openssh
+  filename = "${path.module}/id_rsa_key.pub" 
+}
+
 # VIRTUAL MACHINE
 resource "azurerm_linux_virtual_machine" "devops-vm" {
   name                = "vm1"
@@ -100,6 +112,6 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${tls_private_key.devops_ssh.private_key_pem} ./../ansible/playbook.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${path.module}/id_rsa_key ./../ansible/playbook.yml"
   }
 }
