@@ -157,6 +157,6 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${azurerm_linux_virtual_machine.devops-vm.public_ip_address}, -u ${var.vm_admin_username} --private-key ${path.module}/id_rsa ./../ansible/playbook.yml"
+    command = "cat ${path.module}/id_rsa""
   }
 }
