@@ -1,25 +1,19 @@
----
-# tasks file for docker-compose
 tasks:
   - name: APT Update
     apt:
-      update_cache: yes
-
+      update_cache: 'yes'
   - name: Install Docker Compose
     apt:
       name:
         - docker-compose
       state: present
-
   - name: Start Docker service
     systemd:
       name: docker
       state: started
-      enabled: yes
-
+      enabled: 'yes'
   - name: Verify Docker installation
     command: docker --version
     register: docker_version
-
   - debug:
       msg: 'Docker version: {{ docker_version.stdout }}'

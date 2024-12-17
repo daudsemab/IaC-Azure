@@ -1,12 +1,10 @@
-- name: Setup NGINX, Docker, and Docker-Compose
+- name: 'Setup NGINX, Docker, and Docker-Compose'
   hosts: all
-  become: yes
-
+  become: 'yes'
   tasks:
     - name: Check Working Status
       debug:
-        msg: "ANSIBLE IS WORKING!"
-  
+        msg: ANSIBLE IS WORKING!
   roles:
     - nginx
     - docker
