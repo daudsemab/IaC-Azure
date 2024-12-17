@@ -122,7 +122,7 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
       host        = azurerm_linux_virtual_machine.devops-vm.public_ip_address
       type        = "ssh"
       user        = var.vm_admin_username
-      private_key = file("${path.module}/id_rsa_key")
+      private_key = tls_private_key.devops_ssh.private_key_pem
     }
   }
 
