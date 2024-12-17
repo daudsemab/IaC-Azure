@@ -97,18 +97,6 @@ resource "tls_private_key" "devops_ssh" {
   rsa_bits  = 4096
 }
 
-# PRIVATE KEY FILE
-resource "local_file" "private_key" {
-  content  = tls_private_key.devops_ssh.private_key_pem
-  filename = "${path.module}/id_rsa"
-}
-
-# PUBLIC KEY FILE
-resource "local_file" "public_key" {
-  content  = tls_private_key.devops_ssh.public_key_openssh
-  filename = "${path.module}/id_rsa.pub" 
-}
-
 # VIRTUAL MACHINE
 resource "azurerm_linux_virtual_machine" "devops-vm" {
   name                = "vm1"
@@ -133,7 +121,7 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
+    offer     = "0001-com-ubuntu-server-focal"
     sku       = "22_04-lts-gen2"
     version   = "latest"
   }
@@ -145,18 +133,5 @@ resource "azurerm_linux_virtual_machine" "devops-vm" {
       private_key = tls_private_key.devops_ssh.private_key_pem
       timeout = "4m"
       agent = false
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -y",
-      "sudo apt install -y software-properties-common python3-pip python3-dev python3-setuptools python3-venv python3-jinja2 python3-yaml python3-httplib2 sshpass python3-cryptography",
-      "sudo add-apt-repository --yes --update ppa:ansible/ansible",
-      "sudo apt install -y ansible"
-    ]
-  }
-
-  provisioner "local-exec" {
-    command = "cat ${path.module}/id_rsa"
   }
 }
