@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "azurerm" { # Step-3 to setup remote state.
-    resource_group_name  = "1-9a4b9074-playground-sandbox"
+    resource_group_name  = "1-9ddb1d1d-playground-sandbox"
     storage_account_name = "tfstatebackendstorage22"
     container_name       = "tfstate-container"
     key                  = "terraform.tfstate"
@@ -17,10 +17,10 @@ terraform {
 provider "azurerm" {
   features {}
 
-  client_id       = "65ecd006-6f9e-45f3-b34e-d94333febbe5"
+  client_id       = "28fcb13b-3953-41d6-82bd-056537140b90"
   client_secret   = var.CLIENT_ACCESS
   tenant_id       = "84f1e4ea-8554-43e1-8709-f0b8589ea118"
-  subscription_id = "28e1e42a-4438-4c30-9a5f-7d7b488fd883"
+  subscription_id = "80ea84e8-afce-4851-928a-9e2219724c69"
   resource_provider_registrations = "none"
 }
 

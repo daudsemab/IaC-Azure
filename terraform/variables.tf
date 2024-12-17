@@ -1,18 +1,18 @@
 variable resource_group_name {
   type        = string
-  default     = "1-9a4b9074-playground-sandbox"
+  default     = "1-9ddb1d1d-playground-sandbox"
   description = "Resource Group"
 }
 
 variable resource_group_location {
   type        = string
-  default     = "South Central US"
+  default     = "East US"
   description = "Resource Group Location"
 }
 
 variable storage_account_name {
   type        = string
-  default     = "tfstatebackendstorage1122"
+  default     = "tfstatebackendstorage23"
   description = "Backend Storage Account"
 }
 
