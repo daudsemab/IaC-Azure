@@ -1,3 +1,5 @@
+########## Before Running This File, Make Sure Storage Account and Container are aleady Created with Same Names ##########
+
 terraform {
   required_providers {
     azurerm = {
@@ -6,7 +8,8 @@ terraform {
     }
   }
 
-  backend "azurerm" { # Step-3 to setup remote state.
+  # BACKEND STORAGE FOR TERRAFORM STATE
+  backend "azurerm" {
     resource_group_name  = "1-9ddb1d1d-playground-sandbox"
     storage_account_name = "tfstatebackendstorage22"
     container_name       = "tfstate-container"
@@ -17,6 +20,7 @@ terraform {
 provider "azurerm" {
   features {}
 
+  # AZURE ACCESS INFO
   client_id       = "28fcb13b-3953-41d6-82bd-056537140b90"
   client_secret   = var.CLIENT_ACCESS
   tenant_id       = "84f1e4ea-8554-43e1-8709-f0b8589ea118"
@@ -24,48 +28,24 @@ provider "azurerm" {
   resource_provider_registrations = "none"
 }
 
-
-###################### Storage Account & Container Created Manually ########################
-
-# resource "azurerm_storage_account" "tfstate" { # Step-1 to setup remote state.
-#   name                            = var.storage_account_name
-#   resource_group_name             = var.resource_group_name
-#   location                        = var.resource_group_location
-#   account_tier                    = "Standard"
-#   account_replication_type        = "LRS"
-#   allow_nested_items_to_be_public = false
-
-#   tags = {
-#     environment = "devops"
-#   }
-# }
-
-# resource "azurerm_storage_container" "tfstate" { # Step-2 to setup remote state.
-#   name                  = var.storage_container_name
-#   storage_account_name  = var.storage_account_name
-#   container_access_type = "private"
-
-#   depends_on = [
-#     azurerm_storage_account.tfstate
-#   ]
-# }
-
-
-resource "azurerm_virtual_network" "devops-vnet" { # Virtual Network
+# VIRTUAL NETWORK
+resource "azurerm_virtual_network" "devops-vnet" {
   name                = "devops-network"
   address_space       = var.vnet_address_space
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_subnet" "devops-subnet" { # Subnet
+# SUBNET
+resource "azurerm_subnet" "devops-subnet" {
   name                 = "internal"
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.devops-vnet.name
   address_prefixes     = var.subnet_address_prefixes
 }
 
-resource "azurerm_network_interface" "devops-nic" { # NiC
+# NETWORK INTERFACE CARD
+resource "azurerm_network_interface" "devops-nic" {
   name                = "dev-nic"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
@@ -77,14 +57,14 @@ resource "azurerm_network_interface" "devops-nic" { # NiC
   }
 }
 
-
-resource "tls_private_key" "devops_ssh" { # SSH Key Generation
+# TLS KEY
+resource "tls_private_key" "devops_ssh" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
-
-resource "azurerm_linux_virtual_machine" "devops-vm" { # Virtual Machine
+# VIRTUAL MACHINE
+resource "azurerm_linux_virtual_machine" "devops-vm" {
   name                = "vm1"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
