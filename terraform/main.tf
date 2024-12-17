@@ -66,6 +66,31 @@ resource "azurerm_network_interface" "devops-nic" {
   }
 }
 
+# NETWORK SECURITY GROUP
+resource "azurerm_network_security_group" "devops-nsg" {
+    name                = "nsg1"
+    location            = var.resource_group_location
+    resource_group_name = var.resource_group_name
+
+    security_rule {
+        name                       = "SSH"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+}
+
+# NIC AND NSG CONNECTION
+resource "azurerm_network_interface_security_group_association" "network-connection" {
+    network_interface_id      = azurerm_network_interface.devops-nic.id
+    network_security_group_id = azurerm_network_security_group.devops-nsg.id
+}
+
 # TLS KEY
 resource "tls_private_key" "devops_ssh" {
   algorithm = "RSA"
