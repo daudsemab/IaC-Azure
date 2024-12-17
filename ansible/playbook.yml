@@ -3,11 +3,12 @@
   become: yes
 
   tasks:
-  - name: Check Working Status
-    command: echo "ANSIBLE IS WORKING!"
+    - name: Check Working Status
+      debug:
+        msg: "ANSIBLE IS WORKING!"
   
-  # roles:
-  #     - nginx
-  #     - docker
-  #     - docker-compose
-  #     - nginx-port-switch
+  roles:
+    - nginx
+    - docker
+    - docker-compose
+    - nginx-port-switch
